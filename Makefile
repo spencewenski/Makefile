@@ -2,8 +2,10 @@
 CC = g++
 # linker
 LD = g++
+# warning flags
+WFLAGS = -Wall -Wextra -pedantic -Wvla
 # compiler flags
-CFLAGS = -Wall -Wextra -pedantic -Wvla -std=c++11
+CFLAGS = -std=c++11
 # linker flags
 LDFLAGS = $(CFLAGS)
 # erase files command
@@ -22,6 +24,7 @@ debug: CFLAGS += -g
 debug: $(PROG)
 # release rule
 release: CFLAGS += -O3
+release: CFLAGS += $(WFLAGS)
 release: $(PROG)
 # gprof rule
 gprof: CFLAGS += -g -pg
@@ -35,8 +38,7 @@ $(PROG): $(OBJS)
 
 # rule to compile object files and automatically generate dependency files
 %.o: %.cpp
-	$(CC) $(CFLAGS) -c $<
-	$(CC) -MM $*.cpp > $*.d
+	$(CC) $(CFLAGS) -c $< -MMD > $*.d
 
 # include dependency files
 -include $(DEPS)

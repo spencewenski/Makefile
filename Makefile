@@ -2,16 +2,14 @@
 CC = g++
 # linker
 LD = g++
-# warning flags
-WFLAGS = -Wall -Wextra -pedantic -Wvla
 # compiler flags
-CFLAGS = -std=c++11
+CFLAGS = -std=c++11 -Wall -Wextra -pedantic -Wvla -c
 # linker flags
-LDFLAGS = $(CFLAGS)
+LDFLAGS = -pedantic -Wall
 # erase files command
-RM = rm
+RM = rm -f
 # list of object files
-OBJS = main.o
+OBJS = test.o
 # list of dependency files
 DEPS = $(OBJS:.o=.d)
 # executable name
@@ -23,8 +21,6 @@ all: release
 debug: CFLAGS += -g
 debug: $(PROG)
 # release rule
-release: CFLAGS += -O3
-release: CFLAGS += $(WFLAGS)
 release: $(PROG)
 # gprof rule
 gprof: CFLAGS += -g -pg
@@ -38,12 +34,15 @@ $(PROG): $(OBJS)
 
 # rule to compile object files and automatically generate dependency files
 %.o: %.cpp
-	$(CC) $(CFLAGS) -c $< -MMD > $*.d
+	$(CC) $(CFLAGS) $< -MMD > $*.d
 
 # include dependency files
 -include $(DEPS)
 
 clean:
+	$(RM) $(OBJS) $(DEPS)
+
+cleanAll:
 	$(RM) $(PROG) $(OBJS) $(DEPS)
 
 cleanObj:

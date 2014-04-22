@@ -25,8 +25,8 @@ release: $(PROG)
 # gprof rule
 gprof: CFLAGS += -g -pg
 gprof: $(PROG)
-# uncomment the following line to delete object files automatically
-# release: cleanObj
+# uncomment the following line to delete object files and .d files automatically
+# release: clean
 
 # rule to link program
 $(PROG): $(OBJS)

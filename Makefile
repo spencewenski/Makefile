@@ -15,12 +15,25 @@ DEPS = $(OBJS:.o=.d)
 # executable name
 PROG = test
 
+# use quiet output
+ifneq ($(findstring $(MAKEFLAGS),s),s)
+ifndef V
+	QUIET_CC       	= @echo '   ' CC $<;
+	QUIET_LINK			= @echo '   ' LD $<;
+	export V
+endif
+endif
+
 # top-level rule
 all: release
 # debug rule
 debug: CFLAGS += -g
 debug: $(PROG)
-# release rule
+# optimize rule
+opt: CFLAGS += -O3
+opt: release
+# uncomment the following line to treat warnings as errors
+# release: CFLAGS += -Werror
 release: $(PROG)
 # gprof rule
 gprof: CFLAGS += -g -pg
@@ -30,11 +43,11 @@ gprof: $(PROG)
 
 # rule to link program
 $(PROG): $(OBJS)
-	$(LD) $(LDFLAGS) $(OBJS) -o $(PROG)
+	$(QUIET_LINK)$(LD) $(LDFLAGS) $(OBJS) -o $(PROG)
 
 # rule to compile object files and automatically generate dependency files
 %.o: %.cpp
-	$(CC) $(CFLAGS) $< -MMD > $*.d
+	$(QUIET_CC)$(CC) $(CFLAGS) $< -MMD > $*.d
 
 # include dependency files
 -include $(DEPS)

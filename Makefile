@@ -19,7 +19,7 @@ PROG = test
 ifneq ($(findstring $(MAKEFLAGS),s),s)
 ifndef V
 	QUIET_CC       	= @echo '   ' CC $<;
-	QUIET_LINK			= @echo '   ' LD $<;
+	QUIET_LINK		= @echo '   ' LD $<;
 	export V
 endif
 endif

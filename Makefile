@@ -1,19 +1,25 @@
 # compiler
-CC = g++
+CC := g++
 # linker
-LD = g++
-# compiler flags
-CFLAGS = -std=c++11 -Wall -Wextra -pedantic -Wvla -c
-# linker flags
-LDFLAGS = -pedantic -Wall
+LD := g++
+# main compiler flags
+CFLAGS := -std=c++11 -Wall -Wextra -pedantic -Wvla
+# extra compiler flags
+ECFLAGS :=
+# main linker flags
+LDFLAGS := -pedantic -Wall
+# extra linker flags
+ELDFLAGS :=
 # erase files command
-RM = rm -f
+RM := rm -f
 # executable name
-PROG := test
+PROG := a.out
 # source files
-SOURCES := $(shell find -regex '\(.*\.cpp\|.*\.c\|.*\.cc\)' )
-# object files
-OBJS = $(patsubst %.c, %.o, $(filter %.c, $(SOURCES)))
+SOURCES := $(wildcard *.c *.cpp *.cc)
+# pre-compiled object files to link against
+LINKEDOBJS :=
+# object files for each source file
+OBJS := $(patsubst %.c, %.o, $(filter %.c, $(SOURCES)))
 OBJS += $(patsubst %.cpp, %.o, $(filter %.cpp, $(SOURCES)))
 OBJS += $(patsubst %.cc, %.o, $(filter %.cc, $(SOURCES)))
 # dependency files
@@ -47,10 +53,10 @@ gprof: $(PROG)
 
 # rule to link program
 $(PROG): $(OBJS)
-	$(QUIET_LINK)$(LD) $(LDFLAGS) $(OBJS) -o $(PROG)
+	$(QUIET_LINK)$(LD) $(LINKEDOBJS) $(OBJS) $(LDFLAGS) $(ELDFLAGS) -o $(PROG)
 
 # rule to compile object files and automatically generate dependency files
-COMPILE = $(QUIET_CC)$(CC) $(CFLAGS) $< -MMD > $*.d
+COMPILE = $(QUIET_CC)$(CC) $(CFLAGS) $(ECFLAGS) -c $< -MMD > $*.d
 # compile .c files
 .c.o:
 	$(COMPILE)

@@ -8,12 +8,16 @@ CFLAGS = -std=c++11 -Wall -Wextra -pedantic -Wvla -c
 LDFLAGS = -pedantic -Wall
 # erase files command
 RM = rm -f
-# list of object files
-OBJS = test.o
-# list of dependency files
-DEPS = $(OBJS:.o=.d)
 # executable name
-PROG = test
+PROG := test
+# source files
+SOURCES := $(shell find -regex '\(.*\.cpp\|.*\.c\|.*\.cc\)' )
+# object files
+OBJS = $(patsubst %.c, %.o, $(filter %.c, $(SOURCES)))
+OBJS += $(patsubst %.cpp, %.o, $(filter %.cpp, $(SOURCES)))
+OBJS += $(patsubst %.cc, %.o, $(filter %.cc, $(SOURCES)))
+# dependency files
+DEPS = $(OBJS:%.o=%.d)
 
 # use quiet output
 ifneq ($(findstring $(MAKEFLAGS),s),s)
@@ -46,17 +50,28 @@ $(PROG): $(OBJS)
 	$(QUIET_LINK)$(LD) $(LDFLAGS) $(OBJS) -o $(PROG)
 
 # rule to compile object files and automatically generate dependency files
-%.o: %.cpp
-	$(QUIET_CC)$(CC) $(CFLAGS) $< -MMD > $*.d
+COMPILE = $(QUIET_CC)$(CC) $(CFLAGS) $< -MMD > $*.d
+# compile .c files
+.c.o:
+	$(COMPILE)
+# compile .cpp files
+.cpp.o:
+	$(COMPILE)
+# compile .cc files
+.cc.o:
+	$(COMPILE)
 
 # include dependency files
 -include $(DEPS)
 
+.PHONY: clean
 clean:
 	$(RM) $(OBJS) $(DEPS)
 
+.PHONY: cleanAll
 cleanAll:
 	$(RM) $(PROG) $(OBJS) $(DEPS)
 
+.PHONY: cleanObj
 cleanObj:
 	$(RM) $(OBJS)

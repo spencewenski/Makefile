@@ -38,21 +38,21 @@ endif
 all: release
 # debug rule
 debug: CFLAGS += -g
-debug: $(PROG)
+debug: build
 # optimize rule
 opt: CFLAGS += -O3
 opt: release
 # uncomment the following line to treat warnings as errors
 # release: CFLAGS += -Werror
-release: $(PROG)
+release: build
 # gprof rule
 gprof: CFLAGS += -g -pg
-gprof: $(PROG)
+gprof: build
 # uncomment the following line to delete object files and .d files automatically
 # release: clean
 
 # rule to link program
-$(PROG): $(OBJS)
+build: $(OBJS)
 	$(QUIET_LINK)$(LD) $(LINKEDOBJS) $(OBJS) $(LDFLAGS) $(ELDFLAGS) -o $(PROG)
 
 # rule to compile object files and automatically generate dependency files
@@ -70,14 +70,17 @@ COMPILE = $(QUIET_CC)$(CC) $(CFLAGS) $(ECFLAGS) -c $< -MMD > $*.d
 # include dependency files
 -include $(DEPS)
 
+# remove object files and dependency files, but keep the executable
 .PHONY: clean
 clean:
 	$(RM) $(OBJS) $(DEPS)
 
+# remove all generated files
 .PHONY: cleanAll
 cleanAll:
 	$(RM) $(PROG) $(OBJS) $(DEPS)
 
+# only remove the object files
 .PHONY: cleanObj
 cleanObj:
 	$(RM) $(OBJS)

@@ -38,21 +38,21 @@ endif
 all: release
 # debug rule
 debug: CFLAGS += -g
-debug: build
+debug: $(PROG)
 # optimize rule
 opt: CFLAGS += -O3
 opt: release
 # uncomment the following line to treat warnings as errors
 # release: CFLAGS += -Werror
-release: build
+release: $(PROG)
 # gprof rule
 gprof: CFLAGS += -g -pg
-gprof: build
+gprof: $(PROG)
 # uncomment the following line to delete object files and .d files automatically
 # release: clean
 
 # rule to link program
-build: $(OBJS)
+$(PROG): $(OBJS)
 	$(QUIET_LINK)$(LD) $(LINKEDOBJS) $(OBJS) $(LDFLAGS) $(ELDFLAGS) -o $(PROG)
 
 # rule to compile object files and automatically generate dependency files

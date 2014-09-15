@@ -56,16 +56,18 @@ $(PROG): $(OBJS)
 	$(QUIET_LINK)$(LD) $(LINKEDOBJS) $(OBJS) $(LDFLAGS) $(ELDFLAGS) -o $(PROG)
 
 # rule to compile object files and automatically generate dependency files
-COMPILE = $(QUIET_CC)$(CC) $(CFLAGS) $(ECFLAGS) -c $< -MMD > $*.d
+define cc-command
+	$(QUIET_CC)$(CC) $(CFLAGS) $(ECFLAGS) -c $< -MMD > $*.d
+endef
 # compile .c files
 .c.o:
-	$(COMPILE)
+	$(cc-command)
 # compile .cpp files
 .cpp.o:
-	$(COMPILE)
+	$(cc-command)
 # compile .cc files
 .cc.o:
-	$(COMPILE)
+	$(cc-command)
 
 # include dependency files
 -include $(DEPS)

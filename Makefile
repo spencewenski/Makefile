@@ -3,9 +3,9 @@ CC := g++
 # linker
 LD := g++
 # main compiler flags
-CFLAGS := -std=c++11 -Wall -Wextra -pedantic -Wvla
+CCFLAGS := -std=c++11 -Wall -Wextra -pedantic -Wvla
 # extra compiler flags
-ECFLAGS :=
+ECCFLAGS :=
 # main linker flags
 LDFLAGS := -pedantic -Wall
 # extra linker flags
@@ -37,16 +37,16 @@ endif
 # top-level rule
 all: release
 # debug rule
-debug: CFLAGS += -g
+debug: CCFLAGS += -g
 debug: $(PROG)
 # optimize rule
-opt: CFLAGS += -O3
+opt: CCFLAGS += -O3
 opt: release
 # uncomment the following line to treat warnings as errors
-# release: CFLAGS += -Werror
+# release: CCFLAGS += -Werror
 release: $(PROG)
 # gprof rule
-gprof: CFLAGS += -g -pg
+gprof: CCFLAGS += -g -pg
 gprof: $(PROG)
 # uncomment the following line to delete object files and .d files automatically
 # release: clean
@@ -57,7 +57,7 @@ $(PROG): $(OBJS)
 
 # rule to compile object files and automatically generate dependency files
 define cc-command
-	$(QUIET_CC)$(CC) $(CFLAGS) $(ECFLAGS) -c $< -MMD > $*.d
+	$(QUIET_CC)$(CC) $(CCFLAGS) $(ECCFLAGS) -c $< -MMD > $*.d
 endef
 # compile .c files
 .c.o:

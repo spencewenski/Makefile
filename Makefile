@@ -53,7 +53,7 @@ gprof: $(PROG)
 
 # rule to link program
 $(PROG): $(OBJS)
-	$(QUIET_LINK)$(LD) $(LINKEDOBJS) $(OBJS) $(LDFLAGS) $(ELDFLAGS) -o $(PROG)
+	$(QUIET_LINK)$(LD) $(OBJS) $(LDFLAGS) $(LINKEDOBJS) $(ELDFLAGS) -o $(PROG)
 
 # rule to compile object files and automatically generate dependency files
 define cc-command

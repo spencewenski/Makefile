@@ -15,13 +15,12 @@ RM := rm -f
 # executable name
 PROG := a.out
 # source files
-SOURCES := $(wildcard *.c *.cpp *.cc)
+SOURCES := $(wildcard *.c *.cpp)
 # pre-compiled object files to link against
 LINKEDOBJS :=
 # object files for each source file
 OBJS := $(patsubst %.c, %.o, $(filter %.c, $(SOURCES)))
 OBJS += $(patsubst %.cpp, %.o, $(filter %.cpp, $(SOURCES)))
-OBJS += $(patsubst %.cc, %.o, $(filter %.cc, $(SOURCES)))
 # dependency files
 DEPS = $(OBJS:%.o=%.d)
 

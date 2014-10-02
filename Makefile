@@ -36,6 +36,8 @@ endif
 # top-level rule
 all: release
 # debug rule
+# uncomment this line to stop the compiler from eliding constructors
+# debug: CCFLAGS += -fno-elide-constructors
 debug: CCFLAGS += -g
 debug: $(PROG)
 # optimize rule

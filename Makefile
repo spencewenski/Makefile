@@ -98,6 +98,10 @@ cleanTests:
 # test_name: $(OBJS_MINUS_MAIN)
 # 	$(QUIET_CC)$(CC) $(CCFLAGS) $(ECCFLAGS) test_name.cc $(OBJS_MINUS_MAIN) $(LINKEDOBJS) $(ELDFLAGS) -o test_name.out
 
+# compile tests
+# .PHONY: compile_tests
+# compile_tests: test_name
+
 # generate expected output for tests
 # .PHONY: test_get_expected_output
 # test_get_expected_output:

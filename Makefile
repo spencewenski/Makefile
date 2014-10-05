@@ -5,22 +5,27 @@ LD := g++
 # main compiler flags
 CCFLAGS := -std=c++11 -Wall -Wextra -pedantic -Wvla
 # extra compiler flags
-ECCFLAGS :=
+ECCFLAGS := 
 # main linker flags
 LDFLAGS := -pedantic -Wall
 # extra linker flags
-ELDFLAGS :=
+ELDFLAGS := 
 # erase files command
 RM := rm -f
 # executable name
 PROG := a.out
+# executables for test cases
+TEST_EXEC := $(wildcard *.out)
+TEST_EXEC := $(filter-out $(PROG), $(TEST_EXEC)) # filter out the $(PROG) exec
 # source files
 SOURCES := $(wildcard *.c *.cpp)
 # pre-compiled object files to link against
-LINKEDOBJS :=
+LINKEDOBJS := 
 # object files for each source file
 OBJS := $(patsubst %.c, %.o, $(filter %.c, $(SOURCES)))
 OBJS += $(patsubst %.cpp, %.o, $(filter %.cpp, $(SOURCES)))
+# all objects except for main.o
+OBJS_MINUS_MAIN := $(filter-out main.o, $(OBJS))
 # dependency files
 DEPS = $(OBJS:%.o=%.d)
 
@@ -36,8 +41,6 @@ endif
 # top-level rule
 all: release
 # debug rule
-# uncomment this line to stop the compiler from eliding constructors
-# debug: CCFLAGS += -fno-elide-constructors
 debug: CCFLAGS += -g
 debug: $(PROG)
 # optimize rule
@@ -73,17 +76,30 @@ endef
 # include dependency files
 -include $(DEPS)
 
+# clean up targets
+.PHONY: clean cleanAll cleanObj cleanTests
 # remove object files and dependency files, but keep the executable
-.PHONY: clean
 clean:
 	$(RM) $(OBJS) $(DEPS)
 
 # remove all generated files
-.PHONY: cleanAll
 cleanAll:
 	$(RM) $(PROG) $(OBJS) $(DEPS)
 
 # only remove the object files
-.PHONY: cleanObj
 cleanObj:
-	$(RM) $(OBJS)
+	$(RM) $(OBJS) $(OBJS_TESTS)
+
+cleanTests:
+	$(RM) $(OBJS_TESTS) $(TEST_EXEC) $(wildcard *.output)
+
+# tests
+# .PHONY: test
+# test: $(OBJS_MINUS_MAIN)
+# 	$(QUIET_CC)$(CC) $(CCFLAGS) $(ECCFLAGS) test.cc $(OBJS_MINUS_MAIN) $(LINKEDOBJS) $(ELDFLAGS) -o test.out
+
+# .PHONY: run_tests
+# run_tests: test
+# run_tests:
+# 	./test.out > test.output
+# 	diff test.output test.expected

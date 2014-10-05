@@ -1,6 +1,6 @@
 Makefiles
 =========
-General use makefiles  
+General use makefile  
 
 Features
 --------

@@ -94,12 +94,17 @@ cleanTests:
 	$(RM) $(OBJS_TESTS) $(TEST_EXEC) $(wildcard *.output)
 
 # tests
-# .PHONY: test
-# test: $(OBJS_MINUS_MAIN)
-# 	$(QUIET_CC)$(CC) $(CCFLAGS) $(ECCFLAGS) test.cc $(OBJS_MINUS_MAIN) $(LINKEDOBJS) $(ELDFLAGS) -o test.out
+# .PHONY: test_name
+# test_name: $(OBJS_MINUS_MAIN)
+# 	$(QUIET_CC)$(CC) $(CCFLAGS) $(ECCFLAGS) test_name.cc $(OBJS_MINUS_MAIN) $(LINKEDOBJS) $(ELDFLAGS) -o test_name.out
+
+# generate expected output for tests
+# .PHONY: test_get_expected_output
+# test_get_expected_output:
+# 	./test_name.out > test_name.expected
 
 # .PHONY: run_tests
-# run_tests: test
+# run_tests: test_name
 # run_tests:
-# 	./test.out > test.output
-# 	diff test.output test.expected
+# 	./test_name.out > test_name.output
+# 	diff test_name.output test_name.expected

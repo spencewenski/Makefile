@@ -108,7 +108,7 @@ cleanTests:
 # 	./test_name.out > test_name.expected
 
 # .PHONY: run_tests
-# run_tests: test_name
+# run_tests: compile_tests
 # run_tests:
 # 	./test_name.out > test_name.output
 # 	diff test_name.output test_name.expected

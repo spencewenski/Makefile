@@ -2,6 +2,8 @@
 CC := g++
 # linker
 LD := g++
+# preprocessor flags
+CPPFLAGS :=
 # main compiler flags
 CCFLAGS := -std=c++11 -Wall -Wextra -pedantic -Wvla
 # extra compiler flags
@@ -15,10 +17,10 @@ RM := rm -f
 # executable name
 PROG := a.out
 # executables for test cases
-TEST_EXEC := $(wildcard *.out)
-TEST_EXEC := $(filter-out $(PROG), $(TEST_EXEC)) # filter out the $(PROG) exec
+TEST_EXEC := $(wildcard test*.out)
 # source files
 SOURCES := $(wildcard *.c *.cpp)
+SOURCES := $(filter-out $(wildcard test*), $(SOURCES))
 # pre-compiled object files to link against
 LINKEDOBJS := 
 # object files for each source file
@@ -39,15 +41,16 @@ endif
 endif
 
 # top-level rule
-all: release
+all: $(PROG)
 # debug rule
 debug: CCFLAGS += -g
 debug: $(PROG)
 # optimize rule
 opt: CCFLAGS += -O3
-opt: release
+opt: $(PROG)
 # uncomment the following line to treat warnings as errors
-# release: CCFLAGS += -Werror
+release: opt
+release: CPPFLAGS += -D NDEBUG
 release: $(PROG)
 # gprof rule
 gprof: CCFLAGS += -g -pg
@@ -57,11 +60,11 @@ gprof: $(PROG)
 
 # rule to link program
 $(PROG): $(OBJS)
-	$(QUIET_LINK)$(LD) $(OBJS) $(LDFLAGS) $(LINKEDOBJS) $(ELDFLAGS) -o $(PROG)
+	$(QUIET_LINK)$(LD) $(OBJS) $(LDFLAGS) $(LINKEDOBJS) $(ELDFLAGS) $(CPPFLAGS) -o $(PROG)
 
 # rule to compile object files and automatically generate dependency files
 define cc-command
-	$(QUIET_CC)$(CC) $(CCFLAGS) $(ECCFLAGS) -c $< -MMD > $*.d
+	$(QUIET_CC)$(CC) $(CCFLAGS) $(ECCFLAGS) $(CPPFLAGS) -c $< -MMD > $*.d
 endef
 # compile .c files
 .c.o:
@@ -96,7 +99,7 @@ cleanTests:
 # tests
 # .PHONY: test_name
 # test_name: $(OBJS_MINUS_MAIN)
-# 	$(QUIET_CC)$(CC) $(CCFLAGS) $(ECCFLAGS) test_name.cc $(OBJS_MINUS_MAIN) $(LINKEDOBJS) $(ELDFLAGS) -o test_name.out
+# 	$(QUIET_CC)$(CC) $(CCFLAGS) $(ECCFLAGS) test_name.cpp $(OBJS_MINUS_MAIN) $(LINKEDOBJS) $(ELDFLAGS) -o test_name.out
 
 # compile tests
 # .PHONY: compile_tests

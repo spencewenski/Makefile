@@ -86,6 +86,7 @@ clean:
 	$(RM) $(OBJS) $(DEPS)
 
 # remove all generated files
+cleanAll: cleanTests
 cleanAll:
 	$(RM) $(PROG) $(OBJS) $(DEPS)
 

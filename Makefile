@@ -92,10 +92,10 @@ cleanAll:
 
 # only remove the object files
 cleanObj:
-	$(RM) $(OBJS) $(OBJS_TESTS)
+	$(RM) $(OBJS)
 
 cleanTests:
-	$(RM) $(OBJS_TESTS) $(TEST_EXEC) $(wildcard *.output)
+	$(RM) $(TEST_EXEC)
 
 # tests
 # .PHONY: test_name

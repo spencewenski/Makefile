@@ -9,7 +9,7 @@ Features
 - Quiet compiler output
 
 
-Using
+Usage
 -----
 - Currently only supports projects located in a single directory (i.e. Makefile should be in the same directory as all of the source files)
 - There should only be one 'main' function, and it should be located in a file named main.cpp or main.c (i.e. the file's object file should be named main.o)

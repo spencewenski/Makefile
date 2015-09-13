@@ -17,7 +17,7 @@ ELDFLAGS :=
 # code coverage linker flags
 CODE_COVERAGE_LD_FLAGS :=
 # libraries
-LIBS :=
+LIBS := -lGL -lGLU -lglut
 # erase files command
 RM := rm -f
 

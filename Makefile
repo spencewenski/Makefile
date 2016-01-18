@@ -123,6 +123,3 @@ cleanAllExceptMainExec: clean
 cleanAll: cleanAllExceptMainExec
 cleanAll:
 	$(RM) $(PROG)
-
-cleanGoogleTest:
-	$(RM) gtest*.o gtest*.a gmock*.o gmock*.a

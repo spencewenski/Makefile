@@ -118,7 +118,6 @@ cleanTests:
 # remove all generated files except for the main executable
 cleanAllExceptMainExec: cleanTests
 cleanAllExceptMainExec: clean
-cleanAllExceptMainExec: cleanCodeCoverage
 
 # remove all generated files
 cleanAll: cleanAllExceptMainExec

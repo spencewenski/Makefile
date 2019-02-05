@@ -5,7 +5,7 @@ LD ?= g++
 # preprocessor flags
 CPPFLAGS :=
 # main compiler flags
-CXXFLAGS := -std=c++11 -Wall -Wextra -pedantic -Wvla
+CXXFLAGS := -std=c++17 -Wall -Wextra -pedantic -Wvla
 # extra compiler flags
 EXXFLAGS :=
 # code coverage compile flags
@@ -37,7 +37,7 @@ PROG := a.out
 SOURCES := $(wildcard *.c *.cpp)
 SOURCES := $(filter-out $(TEST_SOURCES), $(SOURCES))
 # pre-compiled object files to link against
-LINKEDOBJS := 
+LINKEDOBJS :=
 # object files for each source file
 OBJS := $(patsubst %.c, %.o, $(filter %.c, $(SOURCES)))
 OBJS += $(patsubst %.cpp, %.o, $(filter %.cpp, $(SOURCES)))
@@ -114,7 +114,7 @@ cleanAllObj:
 # remove all generated test files
 cleanTests:
 	$(RM) $(TEST_PROG) $(TEST_OBJS) $(TEST_DEPS)
-	
+
 # remove all generated files except for the main executable
 cleanAllExceptMainExec: cleanTests
 cleanAllExceptMainExec: clean
